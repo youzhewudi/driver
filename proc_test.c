@@ -14,7 +14,7 @@ static struct proc_dir_entry *dir;
 static struct proc_dir_entry *entry;
 
 static int proc_show(struct seq_file *file, void *v) {
-  seq_printk(file, "hello world\n");
+  seq_printf(file, "hello world\n");
   return 0;
 }
 
@@ -30,7 +30,7 @@ static struct file_operations my_fops = {
   .release = single_release,
 };
 
-static int __init proc_init() {
+static int __init proc_init(void) {
   dir = proc_mkdir(DIR, NULL);
   if (NULL == dir) {
     printk(KERN_ALERT "Create dir %s fault\n", DIR);
@@ -42,9 +42,10 @@ static int __init proc_init() {
     printk(KERN_ALERT "Create entry %s fault\n", ENTRY);
     remove_proc_entry(DIR, NULL);
     return -1;
+  }
 }
 
-static void __exit proc_exit() {
+static void __exit proc_exit(void) {
   remove_proc_entry(ENTRY, dir);
   remove_proc_entry(DIR, NULL);
 }
