@@ -15,8 +15,8 @@ int temp = 0;
 char msg[BUFF_SIZE];
 static proc_dir_entry *test;
 
-static ssize_t proc_read(struct file *filp, char __user *buf,
-                        size_t count, loff_t off) {
+static ssize_t proc_read(struct file *filp, const char __user *buf,
+                        size_t count, loff_t *off) {
   if (temp) {
     temp = 0;
     return 0;
@@ -32,7 +32,7 @@ static ssize_t proc_read(struct file *filp, char __user *buf,
 }
 
 static ssize_t proc_write(struct file *filp, char __user *buf,
-                          size_t count, loff_t off) {
+                          size_t count, loff_t *off) {
   if(copy_from_user(msg, buf, count)) {
     printk(KERN_ALERT "Copy from user fault\n");
     return -EFAULT;
@@ -42,7 +42,7 @@ static ssize_t proc_write(struct file *filp, char __user *buf,
   return count
 }
 
-struct file_operations my_fops = {
+static const struct file_operations my_fops = {
   .owner = THIS_MODULE,
   .read = proc_read,
   .write = proc_write,
