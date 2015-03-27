@@ -36,13 +36,15 @@ static int __init proc_init(void) {
     printk(KERN_ALERT "Create dir %s fault\n", DIR);
     return -1;
   }
-  
+
   entry = proc_create(ENTRY, 0666, dir, &my_fops);
   if (NULL == dir) {
     printk(KERN_ALERT "Create entry %s fault\n", ENTRY);
     remove_proc_entry(DIR, NULL);
     return -1;
   }
+
+  return 0;
 }
 
 static void __exit proc_exit(void) {

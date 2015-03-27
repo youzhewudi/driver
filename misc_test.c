@@ -12,14 +12,14 @@ int main() {
     printf("open file failed\n");
     return -1;
   }
-  
+
   char *mem = (char*)mmap(0, PAGE_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
   if (mem == MAP_FAILED) {
     printf("mmap failed\n");
     return -1;
-  ｝
-  
+  }
+
   printf("msg from miscdev: %s\n", mem);
-  munmap(mem);
+  munmap(mem, PAGE_SIZE);
   return 0;
-｝
+}
